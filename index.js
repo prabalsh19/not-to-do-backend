@@ -13,13 +13,15 @@ app.use(cookieParser());
 app.use(cors());
 
 mongoose
-  .connect("mongodb://localhost:27017", {
+  .connect(process.env.MONGO_URL, {
     dbName: "todo",
   })
   .then((c) => console.log(`Database Connected with ${c.connection.host}`))
   .catch((e) => console.error(e));
 
 app.listen(5000, () => console.log("Server is running at port 5000"));
+
+app.get("/", (req, res) => res.send("Everything working!"));
 
 app.use("/api/user", userRouter);
 app.use("/api", listRouter);
