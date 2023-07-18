@@ -5,11 +5,12 @@ import { config } from "dotenv";
 import userRouter from "./router/user.js";
 import listRouter from "./router/list.js";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
 const app = express();
 config({ path: "config.env" });
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 mongoose
   .connect("mongodb://localhost:27017", {
