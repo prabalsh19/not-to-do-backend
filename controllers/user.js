@@ -15,10 +15,18 @@ export const loginHandler = async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (isMatch) {
     const token = jwt.sign({ _id: user._id }, "sdads");
-    res.status(200).cookie("token", token).json({
-      success: "true",
-      message: "Loggedin Successfully",
-    });
+    res
+      .status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        maxAge: 15 * 60 * 1000,
+        sameSite: "none",
+        secure: true,
+      })
+      .json({
+        success: "true",
+        message: "Loggedin Successfully",
+      });
   } else {
     res.status(404).json({
       success: false,
