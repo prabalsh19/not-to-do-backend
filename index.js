@@ -10,7 +10,13 @@ const app = express();
 config({ path: "config.env" });
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: true }));
+app.use(
+  cors({
+    credentials: true,
+    origin: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 mongoose
   .connect(process.env.MONGO_URL, {
