@@ -27,7 +27,6 @@ export const deletePostHandler = async (req, res) => {
 
   res.json({
     success: true,
-    post,
     message: "post deleted",
   });
 };
