@@ -30,4 +30,4 @@ app.listen(5000, () => console.log("Server is running at port 5000"));
 app.get("/", (req, res) => res.send("Everything working!"));
 
 app.use("/api/user", userRouter);
-app.use("/api", listRouter);
+app.use("/api/task", listRouter);

@@ -35,8 +35,19 @@ export const editTaskHandler = async (req, res) => {
   const { id } = req.params;
   const { task } = req.body;
 
-  const posts = await Task.findByIdAndUpdate(id, { task });
+  await Task.findByIdAndUpdate(id, { task });
   res.json({
-    posts,
+    success: true,
+    message: "Post edited succesfully",
+  });
+};
+
+export const searchHandler = async (req, res) => {
+  const { searchQuery } = req.query;
+  const searchRegex = new RegExp(searchQuery, "i");
+  const result = await Task.find({ $or: [{ task: { $regex: searchRegex } }] });
+
+  res.json({
+    result,
   });
 };
