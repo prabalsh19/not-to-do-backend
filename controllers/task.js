@@ -64,7 +64,7 @@ export const editTaskHandler = async (req, res) => {
 
 export const searchHandler = async (req, res) => {
   try {
-    const { searchQuery } = req.query;
+    const { searchQuery } = req.params;
     const searchRegex = new RegExp(searchQuery, "i");
 
     const result = await Task.find({
