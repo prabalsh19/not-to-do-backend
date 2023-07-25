@@ -13,5 +13,5 @@ router.get("/tasks", isAuthenticated, getAllTaskHandler);
 router.post("/add", isAuthenticated, createTaskHandler);
 router.delete("/remove/:id", isAuthenticated, deletePostHandler);
 router.put("/edit/:id", isAuthenticated, editTaskHandler);
-router.get("/search", isAuthenticated, searchHandler);
+router.get("/search/:searchQuery", isAuthenticated, searchHandler);
 export default router;
