@@ -3,48 +3,63 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const loginHandler = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email }).select("+password");
 
-  if (!user)
-    return res
-      .status(404)
-      .json({ success: false, message: "User doesn't exist" });
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User doesn't exist" });
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (isMatch) {
-    const token = jwt.sign({ _id: user._id }, "sdads");
-    res
-      .status(200)
-      .cookie("token", token, {
-        httpOnly: true,
-        maxAge: 15 * 60 * 1000,
-        sameSite: "none",
-        secure: true,
-      })
-      .json({
-        success: "true",
-        message: "Loggedin Successfully",
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (isMatch) {
+      const token = jwt.sign({ _id: user._id }, "sdads");
+      res
+        .status(200)
+        .cookie("token", token, {
+          httpOnly: true,
+          maxAge: 15 * 60 * 1000,
+          sameSite: "none",
+          secure: true,
+        })
+        .json({
+          success: "true",
+          message: "Loggedin Successfully",
+        });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "Password does not match",
       });
-  } else {
-    res.status(404).json({
+    }
+  } catch {
+    res.json({
       success: false,
-      message: "Password does not match",
+      message: "Internal Server Error",
     });
   }
 };
 
 export const registerHandler = async (req, res) => {
-  const { name, email, password } = req.body;
-  let user = await User.findOne({ email });
-  if (user) return res.json({ success: false, message: "User Already Exist" });
+  try {
+    const { name, email, password } = req.body;
+    let user = await User.findOne({ email });
+    if (user)
+      return res.json({ success: false, message: "User Already Exist" });
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  User.create({ email, name, password: hashedPassword });
-  res.json({
-    success: true,
-    message: "User created",
-  });
+    User.create({ email, name, password: hashedPassword });
+    res.json({
+      success: true,
+      message: "User created",
+    });
+  } catch {
+    res.json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
 };
