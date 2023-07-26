@@ -68,7 +68,7 @@ export const searchHandler = async (req, res) => {
     const searchRegex = new RegExp(searchQuery, "i");
 
     const result = await Task.find({
-      $or: [{ task: { $regex: searchRegex } }],
+      $or: [{ task: { $regex: searchRegex }, user: req.user._id }],
     });
 
     res.json({
