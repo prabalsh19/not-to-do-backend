@@ -10,6 +10,11 @@ const mongooseSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  isArchived: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -81,3 +81,27 @@ export const searchHandler = async (req, res) => {
     });
   }
 };
+
+export const archiveHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const task = await Task.findById(id);
+
+    task.isArchived = !task.isArchived;
+
+    await task.save();
+
+    res.json({
+      success: true,
+      message: task.isArchived
+        ? "Task archived succesfully"
+        : "Task unarchived succesfully",
+    });
+  } catch (e) {
+    res.json({
+      success: true,
+      message: "Internal Server Error",
+    });
+  }
+};

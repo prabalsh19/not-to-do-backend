@@ -21,6 +21,8 @@ app.use(
 mongoose
   .connect(process.env.MONGO_URL, {
     dbName: "todo",
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
   .then((c) => console.log(`Database Connected with ${c.connection.host}`))
   .catch((e) => console.error(e));
